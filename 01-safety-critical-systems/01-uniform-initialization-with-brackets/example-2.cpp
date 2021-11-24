@@ -2,28 +2,34 @@
 #include <iostream>
 #include <string>
 
-class MyData{
-  public:
+class MyData
+{
+public:
+  MyData(std::string, int)
+  {
+    std::cout << "MyData(std::string, int)" << std::endl;
+  }
 
-    MyData(std::string, int){
-      std::cout << "MyData(std::string, int)" << std::endl;
-    }
+  MyData(int, int)
+  {
+    std::cout << "MyData(int, int)" << std::endl;
+  }
 
-    MyData(int, int){
-      std::cout << "MyData(int, int)" << std::endl;
-    }
-
-    MyData(std::initializer_list<int>){
-      std::cout << "MyData(std::initializer_list<int>)" << std::endl;
-    }
+  MyData(std::initializer_list<int>)
+  {
+    std::cout << "MyData(std::initializer_list<int>)" << std::endl;
+  }
 };
 
-template<typename T>
-void printInitializerList(std::initializer_list<T> inList){
-  for (auto& e: inList) std::cout << e << " ";
+template <typename T>
+void printInitializerList(std::initializer_list<T> inList)
+{
+  for (auto &e : inList)
+    std::cout << e << " ";
 }
 
-int main(){
+int main()
+{
 
   std::cout << std::endl;
 
