@@ -1,57 +1,49 @@
-#include <cstring>
-#include <chrono>
 #include <iostream>
 #include <type_traits>
 
-namespace my
-{
-
-    template <typename I, typename T, bool b>
-    void fill_impl(I first, I last, const T &val, const std::integral_constant<bool, b> &)
-    {
-        while (first != last)
-        {
-            *first = val;
-            ++first;
-        }
-    }
-
-    template <typename T>
-    void fill_impl(T *first, T *last, const T &val, const std::true_type &)
-    {
-        std::memset(first, val, last - first);
-    }
-
-    template <class I, class T>
-    inline void fill(I first, I last, const T &val)
-    {
-        // typedef std::integral_constant<bool,std::has_trivial_copy_assign<T>::value && (sizeof(T) == 1)> boolType;
-        typedef std::integral_constant<bool, std::is_trivially_copy_assignable<T>::value && (sizeof(T) == 1)> boolType;
-        fill_impl(first, last, val, boolType());
-    }
-}
-
-const int arraySize = 100000000;
-char charArray1[arraySize] = {
-    0,
-};
-char charArray2[arraySize] = {
-    0,
-};
+using namespace std;
 
 int main()
 {
-    std::cout << std::endl;
+    cout << endl;
+    cout << boolalpha; // displays either true or false instead of 1 or 0
 
-    auto begin = std::chrono::system_clock::now();
-    my::fill(charArray1, charArray1 + arraySize, 1);
-    auto last = std::chrono::system_clock::now() - begin;
-    std::cout << "charArray1: " << std::chrono::duration<double>(last).count() << " seconds" << std::endl;
+    cout << "is_void<void>::value: " << is_void<void>::value << endl;
+    cout << "is_integral<short>::value: " << is_integral<short>::value << endl;
+    cout << "is_floating_point<double>::value: " << is_floating_point<double>::value << endl;
+    cout << "is_array<int []>::value: " << is_array<int[]>::value << endl;
+    cout << "is_pointer<int*>::value: " << is_pointer<int *>::value << endl;
+    cout << "is_null_pointer<std::nullptr_t>::value: " << is_null_pointer<std::nullptr_t>::value << endl;
 
-    begin = std::chrono::system_clock::now();
-    my::fill(charArray2, charArray2 + arraySize, static_cast<char>(1));
-    last = std::chrono::system_clock::now() - begin;
-    std::cout << "charArray2: " << std::chrono::duration<double>(last).count() << " seconds" << std::endl;
+    struct A
+    {
+        int a;
+        int f(double)
+        {
+            return 2011;
+        }
+    };
 
-    std::cout << std::endl;
+    cout << "is_member_object_pointer<int A::*>::value: " << is_member_object_pointer<int A::*>::value << endl;
+    cout << "is_member_function_pointer<int (A::*)(double)>::value: " << is_member_function_pointer<int (A::*)(double)>::value << endl;
+    
+    enum E
+    {
+        e = 1,
+    };
+
+    cout << "is_enum<E>::value: " << is_enum<E>::value << endl;
+
+    union U
+    {
+        int u;
+    };
+
+    cout << "is_union<U>::value: " << is_union<U>::value << endl;
+    cout << "is_class<string>::value: " << is_class<string>::value << endl;
+    cout << "is_function<int * (double)>::value: " << is_function<int *(double)>::value << endl;
+    cout << "is_lvalue_reference<int&>::value: " << is_lvalue_reference<int &>::value << endl;
+    cout << "is_rvalue_reference<int&&>::value: " << is_rvalue_reference<int &&>::value << endl;
+
+    cout << endl;
 }
