@@ -17,3 +17,7 @@ int main()
 
     std::cout << std::endl;
 }
+
+float min(float x, float y, float z){
+    return x < y ? (x < z ? x : z) : (y < z ? y : z);
+}
